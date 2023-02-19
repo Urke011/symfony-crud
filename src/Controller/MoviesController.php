@@ -43,7 +43,7 @@ class MoviesController extends AbstractController
 
 
        $movies = $movieRepository->findAll();
-        dd($movies);
+        //dd($movies);
       return $this->render('index.html.twig');
 
     }
