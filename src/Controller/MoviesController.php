@@ -10,6 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MoviesController extends AbstractController
 {
+
+  private  $movieRepository;
+  public function __construct(MovieRepository $movieRepository){
+
+    $this->movieRepository = $movieRepository;
+  }
     /*
     #[Route('/movies/{name}', name: 'app_movies', defaults:['name'=> null], methods:['GET','HEAD'])]
     public function index($name): JsonResponse
@@ -20,8 +26,9 @@ class MoviesController extends AbstractController
         ]);
     }
     */
-    #[Route('/movies', name: 'app_movies')]
-    public function index(MovieRepository $movieRepository): Response
+  
+    #[Route('/movies', name: 'movies')]
+    public function index(): Response
     {
       //drugi metod (EntityManagerRepository $em)
       //sa konstruktorm na vrhu controlora(asp.net ist prinicp)
@@ -40,11 +47,25 @@ class MoviesController extends AbstractController
       //find()
       //findAll()
       //findBy()
-
-
-       $movies = $movieRepository->findAll();
+      //$movies = $movieRepository->findAll();
         //dd($movies);
-      return $this->render('index.html.twig');
+
+        $movies = $this->movieRepository->findAll();
+        //dd($movies);
+      return $this->render('movies/index.html.twig',[
+        'movies'=> $movies
+      ]);
+
+    }
+
+    #[Route('/movies/{id}', methods: ['GET'], name: 'movies')]
+    public function show($id): Response
+    {
+      $movie = $this->movieRepository->find($id);
+      
+      return $this->render('movies/show.html.twig',[
+        'movie'=> $movie
+      ]);
 
     }
 }
