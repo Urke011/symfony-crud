@@ -90,7 +90,7 @@ class MoviesController extends AbstractController
           }
           $this->em->persist($newMovie);
           $this->em->flush();
-        return $this->redirectToRoute('movies');
+        return $this->redirectToRoute('app_movies');
       }
 
       return $this->render('movies/create.html.twig',[
@@ -130,7 +130,7 @@ class MoviesController extends AbstractController
                     $movie->setImagePath('/uploads/' . $newFileName);
                     $this->em->flush();
 
-                    return $this->redirectToRoute('movies');
+                    return $this->redirectToRoute('app_movies');
                 }
             } else {
                 $movie->setTitle($form->get('title')->getData());
@@ -138,7 +138,7 @@ class MoviesController extends AbstractController
                 $movie->setDescription($form->get('description')->getData());
 
                 $this->em->flush();
-                return $this->redirectToRoute('movies');
+                return $this->redirectToRoute('app_movies');
             }
         }
 
@@ -147,7 +147,15 @@ class MoviesController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    #[Route('/movies/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_movie')]
+    public function delete($id): Response
+    {
+        $movie = $this->movieRepository->find($id);
+        $this->em->remove($movie);
+        $this->em->flush();
 
+        return $this->redirectToRoute('app_movies');
+    }
 
     #[Route('/movies/{id}', methods: ['GET'], name: 'movies')]
     public function show($id): Response
