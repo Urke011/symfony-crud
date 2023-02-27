@@ -218,7 +218,7 @@ var app = (0,_symfony_stimulus_bridge__WEBPACK_IMPORTED_MODULE_0__.startStimulus
   \**************************************/
 /***/ (() => {
 
-alert("12345");
+/* alert("12345");*/
 
 /***/ }),
 
